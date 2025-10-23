@@ -75,12 +75,26 @@ async def register(payload: RegisterRequest):
             )
         
         user_id = auth_response.user.id
-        token = auth_response.session.access_token if auth_response.session else None
+        
+        # If sign_up doesn't return a session (e.g., email confirmation is on),
+        # try to sign in to get a session.
+        if auth_response.session:
+            token = auth_response.session.access_token
+        else:
+            # Sign in the user to get a session
+            session_response = supabase.auth.sign_in_with_password({
+                "email": payload.email,
+                "password": payload.password
+            })
+            if session_response.session:
+                token = session_response.session.access_token
+            else:
+                token = None
         
         if not token:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Failed to generate authentication token"
+                detail="Failed to generate authentication token after registration"
             )
         
         # Create user profile in database

@@ -1,7 +1,11 @@
 from functools import lru_cache
 from supabase import create_client, Client
-from backend_py.config import get_settings
-
+try:
+    # preferred relative import when running as a package
+    from .config import get_settings
+except (ImportError, SystemError):
+    # fallback to absolute import when the module is executed directly
+    from backend_py.config import get_settings
 
 @lru_cache(maxsize=1)
 def get_supabase_client() -> Client:
