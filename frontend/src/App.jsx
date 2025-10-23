@@ -11,6 +11,8 @@ import Profile from './pages/Profile'
 import Timer from './pages/Timer'
 import Resources from './pages/Resources'
 import PDFChat from './pages/PDFChat'
+import Planner from './pages/Planner'
+import Notes from './pages/Notes'
 
 function App() {
   // const { isAuthenticated } = useAuthStore()
@@ -40,11 +42,11 @@ function App() {
           <Route path="progress" element={<Progress />} />
           <Route path="profile" element={<Profile />} />
           {/* New routes for sidebar navigation */}
-          <Route path="planner" element={<div className="p-8"><h1 className="text-2xl font-bold text-arcade-teal">Planner</h1><p className="text-gray-600">Coming soon...</p></div>} />
+          <Route path="planner" element={<Planner />} />
           <Route path="resources" element={<Resources />} />
           <Route path="scriba" element={<PDFChat />} />
           <Route path="timer" element={<Timer />} />
-          <Route path="notes" element={<div className="p-8"><h1 className="text-2xl font-bold text-arcade-teal">Notes</h1><p className="text-gray-600">Coming soon...</p></div>} />
+          <Route path="notes" element={<Notes />} />
         </Route>
         
         {/* Catch all route */}

@@ -2,8 +2,8 @@ import os
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from backend_py.config import get_settings
-from .routers import chat, progress, resources, pdf, auth
+from .config import get_settings
+from .routers import chat, progress, resources, pdf, auth, planner, notes, audio, ocr, pyq, flashcards, gamification
 from .utils.logger import setup_logger, log_api_call, log_error, log_success
 import time
 
@@ -87,6 +87,15 @@ app.include_router(chat.router)
 app.include_router(progress.router)
 app.include_router(resources.router)
 app.include_router(pdf.router)
+app.include_router(planner.router)
+app.include_router(notes.router)
+
+# New feature routers
+app.include_router(audio.router)
+app.include_router(ocr.router)
+app.include_router(pyq.router)
+app.include_router(flashcards.router)
+app.include_router(gamification.router)
 
 # Startup event
 @app.on_event("startup")
@@ -98,6 +107,13 @@ async def startup_event():
     logger.info("  - Progress: /api/progress/*")
     logger.info("  - Resources: /api/resources/*")
     logger.info("  - PDF: /api/pdf/*")
+    logger.info("  - Planner: /api/planner/*")
+    logger.info("  - Notes: /api/notes/*")
+    logger.info("  🎤 Audio Transcription: /api/audio/*")
+    logger.info("  📄 OCR: /api/ocr/*")
+    logger.info("  🎯 PYQ Practice: /api/pyq/*")
+    logger.info("  🎴 Flashcards: /api/flashcards/*")
+    logger.info("  🏆 Gamification: /api/gamification/*")
     logger.info("  - Health: /health")
     logger.info("  - Docs: /docs")
 

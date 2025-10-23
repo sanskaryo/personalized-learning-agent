@@ -117,6 +117,7 @@ class StudyPlanResponse(BaseModel):
     subjects: List[str]
     study_hours_per_week: int
     status: str
+    milestones: Optional[List[str]] = []
 
 
 # Spaced Repetition Schemas
@@ -204,3 +205,138 @@ class InterviewAnswerResponse(BaseModel):
     score: float
     improvements: List[str]
     status: str
+
+
+# Audio Transcription Schemas
+class AudioTranscriptionRequest(BaseModel):
+    subject: Optional[str] = "General"
+    topic: Optional[str] = "Lecture Notes"
+    auto_save_as_note: bool = True
+
+
+class AudioTranscriptionResponse(BaseModel):
+    transcription_id: str
+    text: str
+    confidence: Optional[float] = None
+    duration: Optional[int] = None
+    chapters: Optional[List[Dict[str, Any]]] = None
+    word_count: int
+    note_id: Optional[str] = None
+    status: str
+    message: str
+
+
+# OCR Schemas
+class OCRRequest(BaseModel):
+    subject: Optional[str] = "General"
+    topic: Optional[str] = "Handwritten Notes"
+    auto_save_as_note: bool = True
+
+
+class OCRResponse(BaseModel):
+    ocr_id: str
+    extracted_text: str
+    confidence: Optional[float] = None
+    word_count: int
+    note_id: Optional[str] = None
+    status: str
+    message: str
+
+
+# PYQ (Previous Year Questions) Schemas
+class PYQGenerateRequest(BaseModel):
+    subject: str = Field(..., min_length=1)
+    topic: str = Field(..., min_length=1)
+    difficulty: str = Field("medium", regex="^(easy|medium|hard)$")
+    count: int = Field(10, ge=1, le=20)
+
+
+class PYQQuestion(BaseModel):
+    id: str
+    question: str
+    marks: int
+    topic: str
+    year: int
+    difficulty: str
+    key_points: List[str]
+
+
+class PYQGenerateResponse(BaseModel):
+    questions: List[PYQQuestion]
+    total_count: int
+    subject: str
+    topic: str
+
+
+class PYQAnswerSubmission(BaseModel):
+    question_id: str
+    question_text: str
+    answer: str
+    subject: str
+
+
+class PYQEvaluation(BaseModel):
+    score: float
+    max_score: float
+    feedback: str
+    strengths: List[str]
+    improvements: List[str]
+    missing_concepts: List[str]
+    exam_tips: List[str]
+
+
+class PYQEvaluationResponse(BaseModel):
+    evaluation: PYQEvaluation
+    submission_id: str
+    status: str
+
+
+# Flashcard Generation from Notes Schemas
+class FlashcardGenerateRequest(BaseModel):
+    note_id: Optional[str] = None
+    content: Optional[str] = None
+    count: int = Field(5, ge=1, le=20)
+    difficulty: Optional[str] = "medium"
+
+
+class GeneratedFlashcard(BaseModel):
+    question: str
+    answer: str
+    difficulty: str
+    hint: Optional[str] = None
+
+
+class FlashcardGenerateResponse(BaseModel):
+    flashcards: List[GeneratedFlashcard]
+    total_count: int
+    source: str
+    status: str
+
+
+# Gamification Schemas
+class UserStats(BaseModel):
+    streak: int
+    total_points: int
+    level: int
+    next_level_points: int
+    achievements: List[Dict[str, Any]]
+    daily_goal_progress: float
+    weekly_study_hours: float
+
+
+class Achievement(BaseModel):
+    id: str
+    title: str
+    description: str
+    icon_url: str
+    unlocked_at: str
+    rarity: str
+
+
+class LeaderboardEntry(BaseModel):
+    rank: int
+    user_id: str
+    username: str
+    points: int
+    level: int
+    streak: int
