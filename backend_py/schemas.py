@@ -247,7 +247,8 @@ class OCRResponse(BaseModel):
 class PYQGenerateRequest(BaseModel):
     subject: str = Field(..., min_length=1)
     topic: str = Field(..., min_length=1)
-    difficulty: str = Field("medium", regex="^(easy|medium|hard)$")
+    difficulty: str = Field("medium", pattern="^(easy|medium|hard)$")
+
     count: int = Field(10, ge=1, le=20)
 
 

@@ -1,5 +1,6 @@
 // src/App.jsx - Main App component with routing
 import { Routes, Route, Navigate } from 'react-router-dom'
+import { useEffect } from 'react'
 import { useAuthStore } from './store/authStore'
 import Layout from './components/Layout'
 import Login from './pages/Login'
@@ -15,8 +16,12 @@ import Planner from './pages/Planner'
 import Notes from './pages/Notes'
 
 function App() {
-  // const { isAuthenticated } = useAuthStore()
-  const isAuthenticated = true // Temporarily bypass auth for UI testing
+  const { isAuthenticated, initializeAuth } = useAuthStore()
+  
+  // Initialize auth on app load
+  useEffect(() => {
+    initializeAuth()
+  }, [initializeAuth])
 
   return (
     <div className="min-h-screen bg-arcade-beige">

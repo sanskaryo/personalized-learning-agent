@@ -136,4 +136,4 @@ def get_uvicorn_host_port():
 if __name__ == "__main__":
     import uvicorn
     host_val, port_val = get_uvicorn_host_port()
-    uvicorn.run("backend_py.main_app:app", host=host_val, port=port_val, reload=True)
+    uvicorn.run("backend_py.app_main:app", host=host_val, port=port_val, reload=True)

@@ -43,6 +43,12 @@ def setup_logger():
     
     return logger
 
+def get_logger(name: str = None):
+    """Get the logger instance"""
+    # loguru's logger is a singleton, so we just return it
+    # The name parameter is kept for compatibility but not used
+    return logger
+
 def log_api_call(endpoint: str, method: str, user_id: str = None, **kwargs):
     """Log API calls with context"""
     logger.info(f"🌐 API Call: {method} {endpoint}")
